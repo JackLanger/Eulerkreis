@@ -37,7 +37,7 @@
                     </RadioButton>
                 </StackPanel>
             </Border>
-            <TextBlock Margin="5">Path:</TextBlock>
+            <TextBlock Margin="5" MinWidth="100" Padding="5" FontSize="14" FontFamily="Arial">Path:</TextBlock>
             <TextBlock Text="{Binding Path}" />
         </StackPanel>
 

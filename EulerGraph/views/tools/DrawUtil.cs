@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -7,7 +8,7 @@ namespace EulerGraph.tools;
 
 public static class DrawUtil
 {
-    public static Ellipse DrawNode(Point pos, SolidColorBrush color, ref Canvas canvas, int radius = 9, int index = -1)
+    public static (Ellipse,List<TextBlock>) DrawNode(Point pos, SolidColorBrush color, ref Canvas canvas, int radius = 9, int index = -1)
     {
         var node = new Ellipse();
         node.Fill = color;
@@ -25,7 +26,7 @@ public static class DrawUtil
             ref canvas);
         tb.IsHitTestVisible = false;
         // add mouse over and mouse out events!
-        return node;
+        return (node,new (){tb,coord});
     }
 
     public static Line DrawLine(Point from, Point to, ref Canvas canvas)

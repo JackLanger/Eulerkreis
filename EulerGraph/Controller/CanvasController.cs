@@ -32,7 +32,7 @@ public class CanvasController : BaseController
 
     #region fields
 
-    private Dictionary<Ellipse, Node<int>> Nodes { get; } = new();
+    private Dictionary<Ellipse, (List<TextBlock>,Node<int>)> Nodes { get; } = new();
 
 
     // Ad parameterization to class to enable different Types.
@@ -47,7 +47,7 @@ public class CanvasController : BaseController
     private ICommand _loadFileCommand;
 
     private Ellipse _clickedNode;
-    private readonly Dictionary<Ellipse, Stack<Line>> _graphLines = new();
+    private readonly Dictionary<Ellipse, Stack<(Line, TextBlock)>> _graphLines = new();
     private readonly NodeFileParser _nodeFileParser;
 
     #endregion
@@ -79,10 +79,10 @@ public class CanvasController : BaseController
             var sb = new StringBuilder();
             // Traverse is not respecting immutability so far we need to create deep copies
             // of the nodes before passing them to the graph.
-            var res = new Graph<int>(pair.Value).Traverse();
+            var res = new Graph<int>(pair.Value.Item2).Traverse();
             if (res is null) continue;
             sb.Append($"{++iter}:");
-            foreach (var j in res) sb.Append(j).Append("->");
+            foreach (var j in res) sb.Append(j+1).Append("->");
             pathSb.Append(sb.ToString().Substring(0, sb.Length - 2)).Append("\n");
         }
 
@@ -134,7 +134,8 @@ public class CanvasController : BaseController
 
     private void AddNode(object sender, MouseButtonEventArgs e)
     {
-        if (_isDelete) return;
+        if (_isDelete || e.LeftButton == MouseButtonState.Released) return;
+        
         var pos = e.GetPosition(_canvas);
         foreach (var nodePair in Nodes)
         {
@@ -144,13 +145,13 @@ public class CanvasController : BaseController
                 return;
         }
 
-        var node = DrawUtil.DrawNode(pos, Brushes.Blue, ref _canvas, index: Nodes.Count + 1);
+        var (node,tb) = DrawUtil.DrawNode(pos, Brushes.Blue, ref _canvas, index: Nodes.Count + 1);
 
         // subscribe to events
         setNodeEvents(node);
         // create a new data object for the position
         var data = new Node<int>(Nodes.Count);
-        Nodes.Add(node, data);
+        Nodes.Add(node, (tb, data));
         NodeList.Add(data);
     }
 
@@ -183,14 +184,15 @@ public class CanvasController : BaseController
             var currentNode = sender as Ellipse;
             var (line, lbl) = DrawUtil.DrawWeightedLine(_lastClickPosition.Value, current, Brushes.Gray, 1,
                 ref _canvas);
-            Nodes[_clickedNode].addKante(Nodes[currentNode], 1);
-            Nodes[currentNode].addKante(Nodes[_clickedNode], 1);
+            Nodes[_clickedNode].Item2.addKante(Nodes[currentNode].Item2, 1);
+            Nodes[currentNode].Item2.addKante(Nodes[_clickedNode].Item2, 1);
 
-            if (!_graphLines.ContainsKey(_clickedNode)) _graphLines.Add(_clickedNode, new Stack<Line>());
-            if (!_graphLines.ContainsKey(currentNode)) _graphLines.Add(currentNode, new Stack<Line>());
+            if (!_graphLines.ContainsKey(_clickedNode)) _graphLines.Add(_clickedNode, new Stack<(
+                Line, TextBlock)>());
+            if (!_graphLines.ContainsKey(currentNode)) _graphLines.Add(currentNode, new Stack<(Line,TextBlock)>());
 
-            _graphLines[_clickedNode].Push(line);
-            _graphLines[currentNode].Push(line);
+            _graphLines[_clickedNode].Push((line,lbl));
+            _graphLines[currentNode].Push((line,lbl));
         }
 
         _lastClickPosition = null;
@@ -199,17 +201,33 @@ public class CanvasController : BaseController
 
     private void DeleteNode(object sender, MouseButtonEventArgs e)
     {
-        if (!_isDelete) return;
-
+        if (!_isDelete && e.LeftButton == MouseButtonState.Pressed) return;
+        
         var node = sender as Ellipse;
-        NodeList.Remove(Nodes[node]);
+        NodeList.Remove(Nodes[node].Item2);
         // todo delete kanten
-
-        Nodes.Remove(node);
+        
+        foreach (var tb in Nodes[node].Item1)
+        {
+            _canvas.Children.Remove(tb);
+        }
         _canvas.Children.Remove(node);
-
+        Nodes.Remove(node);
+        _lastClickPosition = null;
         Line line = null;
-        while (_graphLines[node].Count > 0) _canvas.Children.Remove(_graphLines[node].Pop());
+        try
+        {
+            while (_graphLines[node].Count > 0)
+            {
+                var tup = _graphLines[node].Pop();
+                _canvas.Children.Remove(tup.Item1);
+                _canvas.Children.Remove(tup.Item2);
+            }
+        }
+        catch (Exception ex)
+        {
+            // do nothing
+        }
     }
 
     private void sortCanvas()
