@@ -8,31 +8,29 @@
     "net7.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\langer\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Jacek\\.nuget\\packages\\": {},
+    "C:\\Users\\Jacek\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\langer\\Desktop\\OSZIMT\\LF8\\c#\\Eulerkreis\\EulerGraph\\EulerGraph.csproj",
+      "projectUniqueName": "D:\\DesktopApps\\Eulerkreis\\EulerGraph\\EulerGraph.csproj",
       "projectName": "EulerGraph",
-      "projectPath": "C:\\Users\\langer\\Desktop\\OSZIMT\\LF8\\c#\\Eulerkreis\\EulerGraph\\EulerGraph.csproj",
-      "packagesPath": "C:\\Users\\langer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\langer\\Desktop\\OSZIMT\\LF8\\c#\\Eulerkreis\\EulerGraph\\obj\\",
+      "projectPath": "D:\\DesktopApps\\Eulerkreis\\EulerGraph\\EulerGraph.csproj",
+      "packagesPath": "C:\\Users\\Jacek\\.nuget\\packages\\",
+      "outputPath": "D:\\DesktopApps\\Eulerkreis\\EulerGraph\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Users\\Jacek\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\langer\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Jacek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Jacek\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0-windows"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -69,7 +67,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -92,6 +92,7 @@ public class CanvasController : BaseController
     public ICommand ClearCommand => _clearCommand ??= new RelayCommand(() =>
     {
         Nodes.Clear();
+        NodeList.Clear();
         OnPropertyChanged(nameof(Nodes));
         _canvas.Children.Clear();
     });
