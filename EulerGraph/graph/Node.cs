@@ -11,6 +11,12 @@ public class Node<T>
         foreach (var target in targets) addBiDirectionalKante(target, 1);
     }
 
+    public void Disconnect(Kante target)
+    {
+        Kanten.Remove(target);
+        target.getEnd().Kanten.RemoveAll(k => k.getEnd() == this);
+    }
+
     public T Data { get; }
 
     public List<Kante> Kanten { get; }

@@ -79,10 +79,10 @@ public class CanvasController : BaseController
             var sb = new StringBuilder();
             // Traverse is not respecting immutability so far we need to create deep copies
             // of the nodes before passing them to the graph.
-            var res = new Graph<int>(pair.Value.Item2).Traverse();
+            var res = new Graph<int>(pair.Value.Item2).TraverseHierholzer(pair.Value.Item2);
             if (res is null) continue;
             sb.Append($"{++iter}:");
-            foreach (var j in res) sb.Append(j+1).Append("->");
+            foreach (var j in res) sb.Append(j.Data+1).Append("->");
             pathSb.Append(sb.ToString().Substring(0, sb.Length - 2)).Append("\n");
         }
 
